@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Viktor Zdorovcew](https://up.htmlacademy.ru/ecmascript/15/user/1507737).
-* Наставник: `Неизвестно`.
+* Наставник: [Кристина Жиделягина](https://htmlacademy.ru/profile/id575159).
 
 ---
 
