@@ -43,7 +43,7 @@ export const filmPopupTemplate = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${getListFromArr(details.whrites)}</td>
+              <td class="film-details__cell">${getListFromArr(details.writers)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>

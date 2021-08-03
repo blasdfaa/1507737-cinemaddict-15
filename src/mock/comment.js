@@ -11,7 +11,7 @@ export const generateCommentsData = () => {
     return id[getRandomIntegerInRange(0, id.length - 1)];
   };
 
-  const generateAthor = () => {
+  const generateAuthor = () => {
     const authors = [
       'Erich von Stroheim',
       'Mary Beth Hughes',
@@ -64,7 +64,7 @@ export const generateCommentsData = () => {
 
   return {
     id: generateCommentId(),
-    author: generateAthor(),
+    author: generateAuthor(),
     text: generateComments(),
     emoji: generateEmoji(),
     date: generateCommentDate(),

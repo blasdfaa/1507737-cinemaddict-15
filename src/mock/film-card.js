@@ -46,13 +46,13 @@ const generateDescription = () => {
 };
 
 const generateWhrites = () => {
-  const whrites = [
+  const writers = [
     'Anne Wigton',
     'Heinz Herald',
     'Richard Weil',
   ];
 
-  return getRandomArrayInRange(whrites, whrites.length);
+  return getRandomArrayInRange(writers, writers.length);
 };
 
 const generateActors = () => {
@@ -93,13 +93,13 @@ const generateControlsValue = () => ({
 });
 
 const generateComments = () => {
-  const commnets = [];
+  const comments = [];
 
   for (let i = 1; i < 7; i++) {
-    commnets.push(i);
+    comments.push(i);
   }
 
-  return getRandomArrayInRange(commnets, commnets.length - 1);
+  return getRandomArrayInRange(comments, comments.length - 1);
 };
 
 const generateAgeRating = () => {
@@ -135,7 +135,7 @@ export const generateFilmData = () => ({
     age: generateAgeRating(),
     originalTitle: generateTitle(),
     director: 'Anthony Mann',
-    whrites: generateWhrites(),
+    writers: generateWhrites(),
     actors: generateActors(),
     country: generateCountry(),
   },
