@@ -1,4 +1,4 @@
-import { getFormatDate, getDurationTime, sliceDescription } from '../utils/utils.js';
+import { getDurationTime, getFormatDate, sliceDescription } from '../utils/utils.js';
 
 export const filmCardTemplate = (film) => {
   const { title, poster, description, date, genres, rating, comments, userInfo } = film;

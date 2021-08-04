@@ -21,12 +21,12 @@ const ratedFilms = films
   .sort((a, b) => (b.rating > a.rating) ? 1 : -1)
   .slice(0, 2);
 
-const commntedFilms = films
+const commentedFilms = films
   .slice()
   .sort((a, b) => b.comments.length - a.comments.length)
   .slice(0, 2);
 
-const comments = new Array(getRandomIntegerInRange(3, 20)).fill(null).map(generateCommentsData);
+const comments = new Array(getRandomIntegerInRange(3, 20)).fill('').map(generateCommentsData);
 
 const filters = generateFilmsFilter(films);
 
@@ -83,7 +83,7 @@ ratedFilms.forEach((film) => {
   render('beforeend', filmCardTemplate(film), container);
 });
 
-commntedFilms.forEach((film) => {
+commentedFilms.forEach((film) => {
   const container = filmExtraListContainer[1].querySelector('.films-list__container');
   render('beforeend', filmCardTemplate(film), container);
 });
