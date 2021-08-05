@@ -1,11 +1,26 @@
-export const menuListTemplate = () => (
-  `
+const createMenuItemTemplate = (filters) => {
+  const { name, count } = filters;
+
+  const checkFilmCount = (filmCount) =>
+    filmCount > 0
+      ?`<span class="main-navigation__item-count">${filmCount}</span>`
+      : '';
+
+  return (
+    `<a href="#${name}" class="main-navigation__item">
+      ${name}
+      ${checkFilmCount(count)}
+    </a>`
+  );
+};
+
+export const createMenuTemplate = (menuItems) => {
+  const menuItemsTemplate = menuItems.map((item) => createMenuItemTemplate(item)).join('');
+
+  return `
   <nav class="main-navigation">
     <div class="main-navigation__items">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+    ${menuItemsTemplate}
     </div>
       <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>
@@ -15,5 +30,5 @@ export const menuListTemplate = () => (
     <li><a href="#" class="sort__button">Sort by date</a></li>
     <li><a href="#" class="sort__button">Sort by rating</a></li>
   </ul>
- `
-);
+ `;
+};

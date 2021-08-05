@@ -1,22 +1,48 @@
-export const filmCardTemplate = () => (
-  `
-    <article class="film-card">
-      <h3 class="film-card__title">The Dance of Life</h3>
-      <p class="film-card__rating">8.3</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1929</span>
-        <span class="film-card__duration">1h 55m</span>
-        <span class="film-card__genre">Musical</span>
-      </p>
-      <img src="./images/posters/the-dance-of-life.jpg" alt="" class="film-card__poster">
-      <p class="film-card__description">Burlesque comic Ralph "Skid" Johnson (Skelly), and specialty dancer Bonny Lee King (Carroll), end up together on a cold, rainy night at a tr…</p>
-      <a class="film-card__comments">5 comments</a>
-      <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-        <button class="film-card__controls-item film-card__controls-item--favorite" type="button">Mark as favorite</button>
-      </div>
-    </article>
-  `
-);
+import { getDurationTime, getFormatDate, sliceDescription } from '../utils/utils.js';
+
+export const filmCardTemplate = (film) => {
+  const { title, poster, description, date, genres, rating, comments, userInfo } = film;
+
+  const setRatingClass = () => {
+    if (rating < 4) {
+      return 'film-card__rating--poor';
+    } else if (rating > 4 && rating < 6) {
+      return 'film-card__rating--average';
+    }
+
+    return 'film-card__rating--good';
+  };
+
+  const watchlistClass = userInfo.inWatchlist
+    ? 'film-card__controls-item--add-to-watchlist film-card__controls-item--active'
+    : 'film-card__controls-item--add-to-watchlist';
+
+  const favoriteClass = userInfo.isFavorite
+    ? 'film-card__controls-item--favorite  film-card__controls-item--active'
+    : 'film-card__controls-item--favorite';
+
+  const viewedClass = userInfo.isViewed
+    ? 'film-card__controls-item--mark-as-watched film-card__controls-item--active'
+    : 'film-card__controls-item--mark-as-watched';
+
+  return `
+  <article class="film-card">
+    <h3 class="film-card__title">${title}</h3>
+    <p class="film-card__rating ${setRatingClass()}">${rating}</p>
+    <p class="film-card__info">
+      <span class="film-card__year">${getFormatDate(date.releaseDate, 'YYYY')}</span>
+      <span class="film-card__duration">${getDurationTime(date.runtime, 'minute')}</span>
+      <span class="film-card__genre">${genres[0]}</span>
+    </p>
+    <img src=${poster} alt="${title}" class="film-card__poster">
+    <p class="film-card__description">${sliceDescription(description)}</p>
+    <a class="film-card__comments">${comments.length} comments</a>
+    <div class="film-card__controls">
+      <button class="film-card__controls-item ${watchlistClass}" type="button">Add to watchlist </button>
+      <button class="film-card__controls-item ${viewedClass}" type="button">Mark as watched</button>
+      <button class="film-card__controls-item ${favoriteClass}" type="button">Mark as favorite</button>
+    </div>
+  </article>
+`;
+};
 
