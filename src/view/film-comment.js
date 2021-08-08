@@ -1,4 +1,4 @@
-import { getFormatDate } from '../utils/utils.js';
+import { createElement, getFormatDate } from '../utils/utils.js';
 
 const createCommentItemTemplate = (commentsData = {}) => {
   const { author, date, emoji, text } = commentsData;
@@ -22,7 +22,7 @@ const createCommentItemTemplate = (commentsData = {}) => {
   );
 };
 
-export const filmCommentTemplate = (film, commentsItems) => {
+const filmCommentTemplate = (film, commentsItems) => {
   const { comments } = film;
 
   const commentItemsTemplate = commentsItems
@@ -30,11 +30,37 @@ export const filmCommentTemplate = (film, commentsItems) => {
     .map((item) => createCommentItemTemplate(item));
 
   return (
-    ` <div class="film-details__bottom-container">
+    `<div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentItemsTemplate.length}</span></h3>
+        <h3 class="film-details__comments-title">
+          Comments <span class="film-details__comments-count">${commentItemsTemplate.length}</span>
+        </h3>
         <ul class="film-details__comments-list">${commentItemsTemplate.join('')}</ul>
       </section>
     </div>`
   );
 };
+
+export default class CommentList {
+  constructor(film, comments) {
+    this._film = film;
+    this._comments = comments;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return filmCommentTemplate(this._film, this._comments);
+  }
+
+  renderElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
