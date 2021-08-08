@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils';
+import { createElement } from '../utils/utils.js';
 
 const createFilmContainerTemplate = () => (
   '<section class="films"></section>'

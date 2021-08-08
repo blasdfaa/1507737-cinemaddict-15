@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils';
+import { createElement } from '../utils/utils.js';
 
 const showMoreButtonTemplate = () => (
   '<button class="films-list__show-more">Show more</button>'

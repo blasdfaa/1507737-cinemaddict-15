@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils';
+import { createElement } from '../utils/utils.js';
 
 const createFooterStatsTemplate = (films) => (
   `<section class="footer__statistics">

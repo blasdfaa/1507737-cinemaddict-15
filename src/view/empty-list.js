@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils';
+import { createElement } from '../utils/utils.js';
 
 const createEmptyListTemplate = () => (
   '<h2 class="films-list__title">There are no movies in our database</h2>'

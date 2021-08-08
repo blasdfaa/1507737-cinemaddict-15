@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils';
+import { createElement } from '../utils/utils.js';
 
 const filmListRatedTemplate = () => (
   `<section class="films-list films-list--extra">
