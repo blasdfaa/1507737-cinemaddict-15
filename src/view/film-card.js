@@ -1,6 +1,6 @@
-import { getDurationTime, getFormatDate, sliceDescription } from '../utils/utils.js';
+import { createElement, getDurationTime, getFormatDate, sliceDescription } from '../utils/utils.js';
 
-export const filmCardTemplate = (film) => {
+const filmCardTemplate = (film) => {
   const { title, poster, description, date, genres, rating, comments, userInfo } = film;
 
   const setRatingClass = () => {
@@ -25,24 +25,46 @@ export const filmCardTemplate = (film) => {
     ? 'film-card__controls-item--mark-as-watched film-card__controls-item--active'
     : 'film-card__controls-item--mark-as-watched';
 
-  return `
-  <article class="film-card">
-    <h3 class="film-card__title">${title}</h3>
-    <p class="film-card__rating ${setRatingClass()}">${rating}</p>
-    <p class="film-card__info">
-      <span class="film-card__year">${getFormatDate(date.releaseDate, 'YYYY')}</span>
-      <span class="film-card__duration">${getDurationTime(date.runtime, 'minute')}</span>
-      <span class="film-card__genre">${genres[0]}</span>
-    </p>
-    <img src=${poster} alt="${title}" class="film-card__poster">
-    <p class="film-card__description">${sliceDescription(description)}</p>
-    <a class="film-card__comments">${comments.length} comments</a>
-    <div class="film-card__controls">
-      <button class="film-card__controls-item ${watchlistClass}" type="button">Add to watchlist </button>
-      <button class="film-card__controls-item ${viewedClass}" type="button">Mark as watched</button>
-      <button class="film-card__controls-item ${favoriteClass}" type="button">Mark as favorite</button>
-    </div>
-  </article>
-`;
+  return (
+    `<article class="film-card">
+      <h3 class="film-card__title">${title}</h3>
+      <p class="film-card__rating ${setRatingClass()}">${rating}</p>
+      <p class="film-card__info">
+        <span class="film-card__year">${getFormatDate(date.releaseDate, 'YYYY')}</span>
+        <span class="film-card__duration">${getDurationTime(date.runtime, 'minute')}</span>
+        <span class="film-card__genre">${genres[0]}</span>
+      </p>
+      <img src=${poster} alt="${title}" class="film-card__poster">
+      <p class="film-card__description">${sliceDescription(description)}</p>
+      <a class="film-card__comments">${comments.length} comments</a>
+      <div class="film-card__controls">
+        <button class="film-card__controls-item ${watchlistClass}" type="button">Add to watchlist </button>
+        <button class="film-card__controls-item ${viewedClass}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item ${favoriteClass}" type="button">Mark as favorite</button>
+      </div>
+    </article>`
+  );
 };
 
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return filmCardTemplate(this._film);
+  }
+
+  renderElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -361,6 +361,7 @@ button {
 
 .film-card__title {
   margin-right: 0.5em;
+  cursor: pointer;
 }
 
 .film-card__rating,
@@ -390,6 +391,7 @@ button {
   transition: bottom 0.2s ease-out;
   width: 100%;
   z-index: 1;
+  cursor: pointer;
 }
 
 .film-card--no-controls .film-card__poster {
