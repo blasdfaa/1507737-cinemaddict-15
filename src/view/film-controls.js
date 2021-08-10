@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils.js';
+import AbstractView from './abstract';
 
 const filmControlsTemplate = (film) => {
   const { userInfo } = film;
@@ -24,25 +24,13 @@ const filmControlsTemplate = (film) => {
   );
 };
 
-export default class FilmControls {
+export default class FilmControls extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return filmControlsTemplate(this._film);
-  }
-
-  renderElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

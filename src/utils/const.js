@@ -4,3 +4,9 @@ export const EXTRA_FILM_CARDS_COUNT = 2;
 export const COMMENTS_COUNT = 4;
 export const MAX_DESCRIPTION_LENGTH = 139;
 export const TOP_RATED_COUNT = 8;
+
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  AFTEREND: 'afterend',
+  BEFOREEND: 'beforeend',
+};

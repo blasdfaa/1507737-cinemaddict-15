@@ -1,4 +1,7 @@
-import { createElement, getDurationTime, getFormatDate, getListFromArr } from '../utils/utils.js';
+import AbstractView from './abstract';
+import { getListFromArr } from '../utils/common.js';
+import { getDurationTime, getFormatDate } from '../utils/date';
+import { createElement } from '../utils/render';
 
 const filmPopupTemplate = (film) => {
   const { title, poster, description, date, rating, details, genres } = film;
@@ -69,16 +72,17 @@ const filmPopupTemplate = (film) => {
               <p class="film-details__film-description">${description}</p>
             </div>
           </div>
-
         </div>
       </form>
     </section>`
   );
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractView {
   constructor() {
-    this._element = null;
+    super();
+
+    this._closePopupClickHandler = this._closePopupClickHandler.bind(this);
   }
 
   getTemplate(film) {
@@ -96,11 +100,28 @@ export default class FilmPopup {
   }
 
   removeElement() {
+    document.querySelector('body').classList.remove('hide-overflow');
+
     if (this._element) {
       this._element.parentNode.removeChild(this._element);
     }
 
-    this._element = null;
+    super.removeElement();
+  }
+
+  _closePopupClickHandler(evt) {
+    evt.preventDefault();
+
+    document.querySelector('body').classList.remove('hide-overflow');
+    this.removeElement();
+    this._callback.click();
+  }
+
+  setClosePopupClickHandler(callback) {
+    const closeButton = this.renderElement().querySelector('.film-details__close-btn');
+    closeButton.addEventListener('click', this._closePopupClickHandler);
+
+    this._callback.click = callback;
   }
 }
 

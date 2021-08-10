@@ -1,4 +1,4 @@
-import { getRandomIntegerInRange } from '../utils/utils.js';
+import { getRandomIntegerInRange } from '../utils/common.js';
 
 export const generateCommentsData = () => {
   const generateCommentId = () => {
