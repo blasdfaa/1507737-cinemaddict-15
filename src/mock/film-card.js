@@ -1,8 +1,4 @@
-import {
-  getRandomArrayInRange,
-  getRandomIntegerInRange,
-  getRandomIntegerInRangeWithFloat
-} from '../utils/utils.js';
+import { getRandomArrayInRange, getRandomIntegerInRange, getRandomIntegerInRangeWithFloat } from '../utils/common.js';
 
 const generateTitle = () => {
   const titles = [

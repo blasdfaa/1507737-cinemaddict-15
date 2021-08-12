@@ -1,4 +1,6 @@
-import { createElement, getDurationTime, getFormatDate, sliceDescription } from '../utils/utils.js';
+import AbstractView from './abstract';
+import { sliceDescription } from '../utils/common.js';
+import { getDurationTime, getFormatDate } from '../utils/date';
 
 const filmCardTemplate = (film) => {
   const { title, poster, description, date, genres, rating, comments, userInfo } = film;
@@ -46,25 +48,28 @@ const filmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
+    this._filmCardClickHandler = this._filmCardClickHandler.bind(this);
   }
 
   getTemplate() {
     return filmCardTemplate(this._film);
   }
 
-  renderElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _filmCardClickHandler(evt) {
+    const target = evt.target;
+    if (target.matches('.film-card__poster')
+      || target.matches('.film-card__title')
+      || target.matches('.film-card__comments')) {
+      this._callback.click();
     }
-
-    return this._element;
   }
 
-  removeElement() {
-    this._element = null;
+  setFilmCardClickHandler(callback) {
+    this._callback.click = callback;
+    this.renderElement().addEventListener('click', this._filmCardClickHandler);
   }
 }

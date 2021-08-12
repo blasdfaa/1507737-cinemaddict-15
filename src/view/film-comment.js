@@ -1,4 +1,5 @@
-import { createElement, getFormatDate } from '../utils/utils.js';
+import { getFormatDate } from '../utils/date';
+import AbstractView from './abstract';
 
 const createCommentItemTemplate = (commentsData = {}) => {
   const { author, date, emoji, text } = commentsData;
@@ -41,26 +42,14 @@ const filmCommentTemplate = (film, commentsItems) => {
   );
 };
 
-export default class CommentList {
+export default class CommentList extends AbstractView {
   constructor(film, comments) {
+    super();
     this._film = film;
     this._comments = comments;
-    this._element = null;
   }
 
   getTemplate() {
     return filmCommentTemplate(this._film, this._comments);
-  }
-
-  renderElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

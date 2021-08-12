@@ -1,4 +1,4 @@
-import { createElement } from '../utils/utils.js';
+import AbstractView from './abstract';
 
 const createSortFilmListTemplate = () => (
   `<ul class="sort">
@@ -8,28 +8,8 @@ const createSortFilmListTemplate = () => (
   </ul>`
 );
 
-export default class SortFilmList {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SortFilmList extends AbstractView {
   getTemplate() {
     return createSortFilmListTemplate();
-  }
-
-  renderElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element.parentNode.removeChild(this._element);
-    }
-
-    this._element = null;
   }
 }
