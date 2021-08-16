@@ -79,30 +79,27 @@ const filmPopupTemplate = (film) => {
 };
 
 export default class FilmPopup extends AbstractView {
-  constructor() {
+  constructor(film) {
     super();
+
+    this._film = film;
 
     this._closePopupClickHandler = this._closePopupClickHandler.bind(this);
   }
 
-  getTemplate(film) {
-    return filmPopupTemplate(film);
+  getTemplate() {
+    return filmPopupTemplate(this._film);
   }
 
-  renderElement(film) {
+  renderElement() {
     if (!this._element) {
-      this._film = film;
-      this._element = createElement(this.getTemplate(this._film));
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
 
   removeElement() {
-    if (this._element) {
-      this._element.parentNode.removeChild(this._element);
-    }
-
     this._film = null;
     super.removeElement();
   }

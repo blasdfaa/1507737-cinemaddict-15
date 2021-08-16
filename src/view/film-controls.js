@@ -1,17 +1,17 @@
 import AbstractView from './abstract';
 
 const filmControlsTemplate = (film) => {
-  const { userInfo } = film;
+  const { inWatchlist, isFavorite, isViewed } = film;
 
-  const watchlistClass = userInfo.inWatchlist
+  const watchlistClass = inWatchlist
     ? 'film-details__control-button--watchlist film-details__control-button--active'
     : 'film-details__control-button--watchlist';
 
-  const viewedClass = userInfo.isViewed
+  const viewedClass = isViewed
     ? 'film-details__control-button--watched film-details__control-button--active'
     : 'film-details__control-button--watched';
 
-  const favoriteClass = userInfo.isFavorite
+  const favoriteClass = isFavorite
     ? 'film-details__control-button--favorite film-details__control-button--active'
     : 'film-details__control-button--favorite';
 

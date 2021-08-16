@@ -1,4 +1,5 @@
 import { getRandomArrayInRange, getRandomIntegerInRange, getRandomIntegerInRangeWithFloat } from '../utils/common.js';
+import { nanoid } from 'nanoid';
 
 const generateTitle = () => {
   const titles = [
@@ -82,12 +83,6 @@ const generateReleaseData = () => {
   return [year, month, day].join('-');
 };
 
-const generateControlsValue = () => ({
-  isViewed: Boolean(getRandomIntegerInRange(0, 1)),
-  isFavorite: Boolean(getRandomIntegerInRange(0, 1)),
-  inWatchlist: Boolean(getRandomIntegerInRange(0, 1)),
-});
-
 const generateComments = () => {
   const comments = [];
 
@@ -118,6 +113,7 @@ const generateGenres = () => {
 };
 
 export const generateFilmData = () => ({
+  id: nanoid(),
   title: generateTitle(),
   poster: generatePoster(),
   description: generateDescription(),
@@ -136,5 +132,7 @@ export const generateFilmData = () => ({
     country: generateCountry(),
   },
   comments: generateComments(),
-  userInfo: generateControlsValue(),
+  isViewed: Boolean(getRandomIntegerInRange(0, 1)),
+  isFavorite: Boolean(getRandomIntegerInRange(0, 1)),
+  inWatchlist: Boolean(getRandomIntegerInRange(0, 1)),
 });
