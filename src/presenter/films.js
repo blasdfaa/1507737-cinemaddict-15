@@ -76,7 +76,8 @@ export default class Films {
     this._commentedFilmData = updateItem(this._commentedFilmData, updatedFilm);
     // this._dataComments = updateItem(this._dataComments, updatedComments);
 
-    this._filmCardPresenter.get(updatedFilm.id).init(updatedFilm);
+    // В init пока не обновляю комменты, чтобы не выкидывать ошибку при переключении контролов попапа
+    this._filmCardPresenter.get(updatedFilm.id).init(updatedFilm, []);
   }
 
   // Метод для сортировки фильмов

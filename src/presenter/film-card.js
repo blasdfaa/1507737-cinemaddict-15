@@ -26,6 +26,7 @@ export default class FilmCard {
 
     this._filmCardComponent = new FilmCardView(film);
     this._filmPopupComponent = new FilmPopupView(film, comments);
+    this._popup = this._filmPopupComponent.renderElement();
 
     this.body = document.body;
 
@@ -65,7 +66,7 @@ export default class FilmCard {
   }
 
   _removeFilmPopup() {
-    this.body.removeChild(this._filmPopupComponent.renderElement());
+    this.body.removeChild(this._popup);
     this.body.classList.remove('hide-overflow');
   }
 
@@ -74,7 +75,7 @@ export default class FilmCard {
       document.querySelector('.film-details').remove();
     }
 
-    this.body.appendChild(this._filmPopupComponent.renderElement());
+    this.body.appendChild(this._popup);
     this.body.classList.add('hide-overflow');
   }
 

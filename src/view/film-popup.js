@@ -47,9 +47,9 @@ const filmPopupTemplate = (film, commentsItems) => {
     ? 'film-details__control-button--favorite film-details__control-button--active'
     : 'film-details__control-button--favorite';
 
-  // const commentItemsTemplate = commentsItems
-  //   .filter((item) => comments.some((comment) => item.id === comment))
-  //   .map((item) => createCommentItemTemplate(item));
+  const commentItemsTemplate = commentsItems
+    .filter((item) => comments.some((comment) => item.id === comment))
+    .map((item) => createCommentItemTemplate(item));
 
   return (
     `<section class="film-details">
@@ -121,9 +121,9 @@ const filmPopupTemplate = (film, commentsItems) => {
         <div class="film-details__bottom-container">
           <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">
-              Comments <span class="film-details__comments-count"></span>
+              Comments <span class="film-details__comments-count">${commentItemsTemplate.length}</span>
             </h3>
-            <ul class="film-details__comments-list"></ul>
+            <ul class="film-details__comments-list">${commentItemsTemplate.join('')}</ul>
             <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label"></div>
 
