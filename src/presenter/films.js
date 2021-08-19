@@ -53,7 +53,6 @@ export default class Films {
       .slice(0, EXTRA_FILM_CARDS_COUNT);
 
     this._dataComments = [...dataComments];
-    // this._filters = [...filters];
 
     this._renderUserProfile();
     this._renderNavigationMenu();
@@ -145,7 +144,7 @@ export default class Films {
 
   // Метод для рендера одной карточки фильма
   _renderFilmCard(container, film, comments) {
-    const filmCardPresenter = new FilmCardPresenter(container, this._footerContainer, this._filmCardChangeHadler);
+    const filmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
 
     filmCardPresenter.init(film, comments);
     this._filmCardPresenter.set(film.id, filmCardPresenter);

@@ -1,15 +1,11 @@
 import { removeComponent, render, replace } from '../utils/render';
 import { RenderPosition } from '../utils/const';
 import FilmCardView from '../view/film-card';
-import FilmControlsView from '../view/film-controls';
-import CommentListView from '../view/film-comment';
-import NewCommentView from '../view/film-comment-add';
 import FilmPopupView from '../view/film-popup';
 
 export default class FilmCard {
-  constructor(filmContainer, filmPopupContainer, changeData) {
+  constructor(filmContainer, changeData) {
     this._filmContainer = filmContainer;
-    this._filmPopupContainer = filmPopupContainer;
     this._changeData = changeData;
 
     this._filmCardComponent = null;
@@ -26,20 +22,27 @@ export default class FilmCard {
     this._comments = comments;
 
     const prevFilmCardComponent = this._filmCardComponent;
+    const prevFilmPopupComponent = this._filmPopupComponent;
 
     this._filmCardComponent = new FilmCardView(film);
-    this._filmControlsComponent = new FilmControlsView(film);
-    this._filmPopupComponent = new FilmPopupView(film);
-    this._commentListComponent = new CommentListView(film, comments);
-    this._newCommentComponent = new NewCommentView();
+    this._filmPopupComponent = new FilmPopupView(film, comments);
+
+    this.body = document.body;
 
     this._filmCardComponent.setFilmCardClickHandler(() => {
-      document.addEventListener('keydown', this._closePopupEscKeyHandler);
       this._renderFilmPopup();
+      document.addEventListener('keydown', this._closePopupEscKeyHandler);
     });
     this._filmCardComponent.setViewedClickHadler(this._switchViewedClickHadler);
     this._filmCardComponent.setFavoriteClickHadler(this._switchFavoriteClickHadler);
     this._filmCardComponent.setWatchlistClickHadler(this._switchWatchlistClickHadler);
+
+    this._filmPopupComponent.setClosePopupClickHandler(() => {
+      this._removeFilmPopup();
+    });
+    this._filmPopupComponent.setViewedClickHadler(this._switchViewedClickHadler);
+    this._filmPopupComponent.setFavoriteClickHadler(this._switchFavoriteClickHadler);
+    this._filmPopupComponent.setWatchlistClickHadler(this._switchWatchlistClickHadler);
 
     if (prevFilmCardComponent === null) {
       render(this._filmContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -50,34 +53,29 @@ export default class FilmCard {
       replace(this._filmCardComponent, prevFilmCardComponent);
     }
 
+    if (this.body.contains(prevFilmPopupComponent.renderElement())) {
+      replace(this._filmPopupComponent, prevFilmPopupComponent);
+    }
+
     removeComponent(prevFilmCardComponent);
   }
 
   destroy() {
     removeComponent(this._filmCardComponent);
-    removeComponent(this._filmPopupComponent);
   }
 
   _removeFilmPopup() {
-    document.querySelector('body').classList.remove('hide-overflow');
-    removeComponent(this._filmPopupComponent);
+    this.body.removeChild(this._filmPopupComponent.renderElement());
+    this.body.classList.remove('hide-overflow');
   }
 
   _renderFilmPopup() {
-    render(this._filmPopupContainer, this._filmPopupComponent, RenderPosition.AFTEREND);
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
 
-    const filmDetailsContainer = this._filmPopupComponent.renderElement().querySelector('.film-details__inner');
-    render(filmDetailsContainer, this._filmControlsComponent, RenderPosition.BEFOREEND);
-    render(filmDetailsContainer, this._commentListComponent, RenderPosition.BEFOREEND);
-
-    const filmCommentsWrapper = this._commentListComponent.renderElement().querySelector('.film-details__comments-wrap');
-    render(filmCommentsWrapper, this._newCommentComponent, RenderPosition.BEFOREEND);
-
-    this._filmPopupComponent.setClosePopupClickHandler(() => {
-      this._removeFilmPopup();
-    });
-
-    document.querySelector('body').classList.add('hide-overflow');
+    this.body.appendChild(this._filmPopupComponent.renderElement());
+    this.body.classList.add('hide-overflow');
   }
 
   _closePopupEscKeyHandler(evt) {
