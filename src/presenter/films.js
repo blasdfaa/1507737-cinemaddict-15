@@ -104,7 +104,7 @@ export default class Films {
 
     this._sortFilms(sortType);
     this._clearFilmList();
-    this._renderMainFilmCards();
+    this._renderFilms();
   }
 
   // Метод для рендера профиля юзера
