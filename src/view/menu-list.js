@@ -33,6 +33,7 @@ const createMenuTemplate = (menuItems) => {
 export default class Menu extends AbstractView {
   constructor(filters) {
     super();
+
     this._filters = filters;
   }
 

@@ -10,3 +10,9 @@ export const RenderPosition = {
   AFTEREND: 'afterend',
   BEFOREEND: 'beforeend',
 };
+
+export const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};

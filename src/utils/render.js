@@ -1,13 +1,13 @@
 import { RenderPosition } from './const';
 import Abstract from '../view/abstract';
 
-export const render = (container, child, place, arg = {}) => {
+export const render = (container, child, place) => {
   if (container instanceof Abstract) {
     container = container.renderElement();
   }
 
   if (child instanceof Abstract) {
-    child = child.renderElement(arg);
+    child = child.renderElement();
   }
 
   switch (place) {
@@ -37,4 +37,22 @@ export const removeComponent = (component) => {
 
   component.renderElement().remove();
   component.removeElement();
+};
+
+export const replace = (newChild, oldChild) => {
+  if (oldChild instanceof Abstract) {
+    oldChild = oldChild.renderElement();
+  }
+
+  if (newChild instanceof Abstract) {
+    newChild = newChild.renderElement();
+  }
+
+  const parent = oldChild.parentElement;
+
+  if (parent === null || oldChild === null || newChild === null) {
+    throw new Error('Can\'t replace unexisting elements');
+  }
+
+  parent.replaceChild(newChild, oldChild);
 };

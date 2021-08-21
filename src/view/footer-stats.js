@@ -1,8 +1,8 @@
 import AbstractView from './abstract';
 
-const createFooterStatsTemplate = (films) => (
+const createFooterStatsTemplate = (films = []) => (
   `<section class="footer__statistics">
-    <p>${films.length} movies inside</p>
+    <p>${films.length ? films.length : 0} movies inside</p>
   </section>`
 );
 
