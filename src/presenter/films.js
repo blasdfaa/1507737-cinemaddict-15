@@ -44,7 +44,6 @@ export default class Films {
   init(dataFilms, dataComments) {
     this._dataFilms = [...dataFilms];
     this._defaultDataFilms = [...dataFilms];
-
     this._ratedFilmData = [...dataFilms]
       .filter((film) => film.rating > TOP_RATED_COUNT)
       .sort((a, b) => (b.rating > a.rating) ? 1 : -1)
