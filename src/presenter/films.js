@@ -22,6 +22,8 @@ export default class Films {
 
     this._renderedTaskCount = FILM_CARDS_COUNT_STEP;
     this._filmCardPresenter = new Map();
+    this._ratedFilmCardPresenter = new Map();
+    this._commentedFilmCardPresenter = new Map();
 
     this._userProfileComponent = new UserProfileView();
     this._menuNavigationComponent = new MenuView(filters);
@@ -103,8 +105,8 @@ export default class Films {
     }
 
     this._sortFilms(sortType);
-    this._clearFilmList();
-    this._renderFilms();
+    this._clearMainFilmList();
+    this._renderMainFilmCards();
   }
 
   // Метод для рендера профиля юзера
@@ -144,18 +146,31 @@ export default class Films {
   }
 
   // Метод для рендера одной карточки фильма
-  _renderFilmCard(container, film, comments) {
-    const filmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
+  _renderFilmCard(container, film, comments, type = '') {
+    if (type === 'rated') {
+      const ratedFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
+      ratedFilmCardPresenter.init(film, comments);
+      this._ratedFilmCardPresenter.set(film.id, ratedFilmCardPresenter);
+      return;
+    }
 
-    filmCardPresenter.init(film, comments);
-    this._filmCardPresenter.set(film.id, filmCardPresenter);
+    if (type === 'commented') {
+      const commentedFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
+      commentedFilmCardPresenter.init(film, comments);
+      this._commentedFilmCardPresenter.set(film.id, commentedFilmCardPresenter);
+      return;
+    }
+
+    const mainFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
+    mainFilmCardPresenter.init(film, comments);
+    this._filmCardPresenter.set(film.id, mainFilmCardPresenter);
   }
 
   // Метод для рендера нескольких карточек (от, до)
-  _renderFilmCards(container, filmsData, from, to) {
+  _renderFilmCards(container, filmsData, from, to, type) {
     filmsData
       .slice(from, to)
-      .forEach((film) => this._renderFilmCard(container, film, this._dataComments));
+      .forEach((film) => this._renderFilmCard(container, film, this._dataComments, type));
   }
 
   // Метод для рендера сообщение об отсутствии фильмов в базе данных
@@ -202,17 +217,17 @@ export default class Films {
   // Метод для рендера карточек с наивысшим рейтингом
   _renderRatedFilmCards() {
     this._filmListRatedInner = this._filmListRatedComponent.renderElement().querySelector('.films-list__container');
-    this._renderFilmCards(this._filmListRatedInner, this._ratedFilmData, 0, EXTRA_FILM_CARDS_COUNT);
+    this._renderFilmCards(this._filmListRatedInner, this._ratedFilmData, 0, EXTRA_FILM_CARDS_COUNT, 'rated');
   }
 
   // Метод для рендера карточек с большим количеством комментариев
   _renderCommentedFilmCards() {
     this._filmListCommentedInner = this._filmListCommentedComponent.renderElement().querySelector('.films-list__container');
-    this._renderFilmCards(this._filmListCommentedInner, this._commentedFilmData, 0, EXTRA_FILM_CARDS_COUNT);
+    this._renderFilmCards(this._filmListCommentedInner, this._commentedFilmData, 0, EXTRA_FILM_CARDS_COUNT, 'commented');
   }
 
   // Метод для очистки карточек фильмов
-  _clearFilmList() {
+  _clearMainFilmList() {
     this._filmCardPresenter.forEach((presenter) => presenter.destroy());
     this._filmCardPresenter.clear();
     this._renderedTaskCount = FILM_CARDS_COUNT_STEP;
