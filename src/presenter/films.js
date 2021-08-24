@@ -39,6 +39,7 @@ export default class Films {
     this._filmCardChangeHadler = this._filmCardChangeHadler.bind(this);
     this._showMoreFilmsClickHandler = this._showMoreFilmsClickHandler.bind(this);
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+    this._cardModeChangeHandler = this._cardModeChangeHandler.bind(this);
   }
 
   init(dataFilms, dataComments) {
@@ -73,12 +74,23 @@ export default class Films {
   _filmCardChangeHadler(updatedFilm) {
     this._dataFilms = updateItem(this._dataFilms, updatedFilm);
     this._defaultDataFilms = updateItem(this._defaultDataFilms, updatedFilm);
-    this._ratedFilmData = updateItem(this._ratedFilmData, updatedFilm);
-    this._commentedFilmData = updateItem(this._commentedFilmData, updatedFilm);
-    // this._dataComments = updateItem(this._dataComments, updatedComments);
 
-    // В init пока не обновляю комменты, чтобы не выкидывать ошибку при переключении контролов попапа
-    this._filmCardPresenter.get(updatedFilm.id).init(updatedFilm, []);
+    const initFilmCardPresenter = (presenters) => {
+      if (presenters.has(updatedFilm.id)) {
+        presenters.get(updatedFilm.id).init(updatedFilm, this._getComments(updatedFilm.id));
+      }
+    };
+
+    initFilmCardPresenter(this._filmCardPresenter);
+    initFilmCardPresenter(this._ratedFilmCardPresenter);
+    initFilmCardPresenter(this._commentedFilmCardPresenter);
+  }
+
+  // Метод для смены модов карточки фильма
+  _cardModeChangeHandler() {
+    this._filmCardPresenter.forEach((presenter) => presenter.resetView());
+    this._ratedFilmCardPresenter.forEach((presenter) => presenter.resetView());
+    this._commentedFilmCardPresenter.forEach((presenter) => presenter.resetView());
   }
 
   // Метод для сортировки фильмов
@@ -106,6 +118,17 @@ export default class Films {
     this._sortFilms(sortType);
     this._clearMainFilmList();
     this._renderMainFilmCards();
+  }
+
+  _getComments(id) {
+    let comments;
+    this._dataComments.forEach((comment) => {
+      if (comment.has(id)) {
+        comments = comment.get(id);
+      }
+    });
+
+    return comments;
   }
 
   // Метод для рендера профиля юзера
@@ -145,31 +168,17 @@ export default class Films {
   }
 
   // Метод для рендера одной карточки фильма
-  _renderFilmCard(container, film, comments, type = '') {
-    if (type === 'rated') {
-      const ratedFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
-      ratedFilmCardPresenter.init(film, comments);
-      this._ratedFilmCardPresenter.set(film.id, ratedFilmCardPresenter);
-      return;
-    }
-
-    if (type === 'commented') {
-      const commentedFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
-      commentedFilmCardPresenter.init(film, comments);
-      this._commentedFilmCardPresenter.set(film.id, commentedFilmCardPresenter);
-      return;
-    }
-
-    const mainFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler);
-    mainFilmCardPresenter.init(film, comments);
-    this._filmCardPresenter.set(film.id, mainFilmCardPresenter);
+  _renderFilmCard(container, film, filmCardPresenter) {
+    const mainFilmCardPresenter = new FilmCardPresenter(container, this._filmCardChangeHadler, this._cardModeChangeHandler);
+    mainFilmCardPresenter.init(film, this._getComments(film.id));
+    filmCardPresenter.set(film.id, mainFilmCardPresenter);
   }
 
   // Метод для рендера нескольких карточек (от, до)
-  _renderFilmCards(container, filmsData, from, to, type) {
+  _renderFilmCards(container, filmsData, from, to, filmCardPresenter) {
     filmsData
       .slice(from, to)
-      .forEach((film) => this._renderFilmCard(container, film, this._dataComments, type));
+      .forEach((film) => this._renderFilmCard(container, film, filmCardPresenter));
   }
 
   // Метод для рендера сообщение об отсутствии фильмов в базе данных
@@ -190,7 +199,13 @@ export default class Films {
 
   // Обработчик для кнопки "Загрузить еще"
   _showMoreFilmsClickHandler() {
-    this._renderFilmCards(this._mainFilmListInner, this._dataFilms, this._renderedTaskCount, this._renderedTaskCount + FILM_CARDS_COUNT_STEP);
+    this._renderFilmCards(
+      this._mainFilmListInner,
+      this._dataFilms,
+      this._renderedTaskCount,
+      this._renderedTaskCount + FILM_CARDS_COUNT_STEP,
+      this._filmCardPresenter,
+    );
     this._renderedTaskCount += FILM_CARDS_COUNT_STEP;
 
     if (this._renderedTaskCount >= this._dataFilms.length) {
@@ -206,7 +221,12 @@ export default class Films {
   // Метод для рендера всех карточек
   _renderMainFilmCards() {
     this._mainFilmListInner = this._filmsContainerComponent.renderElement().querySelector('.films-list__container');
-    this._renderFilmCards(this._mainFilmListInner, this._dataFilms, 0, Math.min(this._dataFilms.length, FILM_CARDS_COUNT_STEP));
+    this._renderFilmCards(
+      this._mainFilmListInner,
+      this._dataFilms,
+      0, Math.min(this._dataFilms.length, FILM_CARDS_COUNT_STEP),
+      this._filmCardPresenter,
+    );
 
     if (this._dataFilms.length > FILM_CARDS_COUNT_STEP) {
       this._renderShowMoreButton();
@@ -216,21 +236,48 @@ export default class Films {
   // Метод для рендера карточек с наивысшим рейтингом
   _renderRatedFilmCards() {
     this._filmListRatedInner = this._filmListRatedComponent.renderElement().querySelector('.films-list__container');
-    this._renderFilmCards(this._filmListRatedInner, this._ratedFilmData, 0, EXTRA_FILM_CARDS_COUNT, 'rated');
+    this._renderFilmCards(
+      this._filmListRatedInner,
+      this._ratedFilmData,
+      0,
+      EXTRA_FILM_CARDS_COUNT,
+      this._ratedFilmCardPresenter,
+    );
   }
 
   // Метод для рендера карточек с большим количеством комментариев
   _renderCommentedFilmCards() {
     this._filmListCommentedInner = this._filmListCommentedComponent.renderElement().querySelector('.films-list__container');
-    this._renderFilmCards(this._filmListCommentedInner, this._commentedFilmData, 0, EXTRA_FILM_CARDS_COUNT, 'commented');
+    this._renderFilmCards(
+      this._filmListCommentedInner,
+      this._commentedFilmData,
+      0,
+      EXTRA_FILM_CARDS_COUNT,
+      this._commentedFilmCardPresenter,
+    );
+  }
+
+  // Метод для очистки мапов
+  _clearCardPresenter(filmCardPresenter) {
+    filmCardPresenter.forEach((presenter) => presenter.destroy());
+    filmCardPresenter.clear();
   }
 
   // Метод для очистки карточек фильмов
-  _clearMainFilmList() {
-    this._filmCardPresenter.forEach((presenter) => presenter.destroy());
-    this._filmCardPresenter.clear();
+  _clearFilmList() {
+    this._clearCardPresenter(this._filmCardPresenter);
+    this._clearCardPresenter(this._ratedFilmCardPresenter);
+    this._clearCardPresenter(this._commentedFilmCardPresenter);
     this._renderedTaskCount = FILM_CARDS_COUNT_STEP;
 
+    removeComponent(this._showMoreButtonComponent);
+    removeComponent(this._filmListRatedComponent);
+    removeComponent(this._filmListCommentedComponent);
+  }
+
+  _clearMainFilmList() {
+    this._clearCardPresenter(this._filmCardPresenter);
+    this._renderedTaskCount = FILM_CARDS_COUNT_STEP;
     removeComponent(this._showMoreButtonComponent);
   }
 

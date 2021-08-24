@@ -16,3 +16,8 @@ export const SortType = {
   DATE: 'date',
   RATING: 'rating',
 };
+
+export const CardMode = {
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+};
