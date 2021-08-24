@@ -116,7 +116,7 @@ export default class Films {
     }
 
     this._sortFilms(sortType);
-    this._clearFilmList();
+    this._clearMainFilmList();
     this._renderMainFilmCards();
   }
 
@@ -273,6 +273,12 @@ export default class Films {
     removeComponent(this._showMoreButtonComponent);
     removeComponent(this._filmListRatedComponent);
     removeComponent(this._filmListCommentedComponent);
+  }
+
+  _clearMainFilmList() {
+    this._clearCardPresenter(this._filmCardPresenter);
+    this._renderedTaskCount = FILM_CARDS_COUNT_STEP;
+    removeComponent(this._showMoreButtonComponent);
   }
 
   // Метод для инициализации (начала работы) модуля
