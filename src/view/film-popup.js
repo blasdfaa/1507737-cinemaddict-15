@@ -1,5 +1,5 @@
 import { getListFromArr } from '../utils/common.js';
-import { getDurationTime, getFormatDate } from '../utils/date';
+import { getDurationTime, getFormatDate, getRelativeTimeFromDate } from '../utils/date';
 import SmartView from './smart';
 
 const createCommentItemTemplate = (commentsData = {}) => {
@@ -14,7 +14,7 @@ const createCommentItemTemplate = (commentsData = {}) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">
-            ${getFormatDate(date, 'YYYY/MM/DD HH:MM')}
+            ${getRelativeTimeFromDate(date)}
           </span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
