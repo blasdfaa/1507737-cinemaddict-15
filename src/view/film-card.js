@@ -15,8 +15,8 @@ const filmCardTemplate = (film) => {
     isFavorite,
     isWatchlist,
     isViewed,
-    isDisabled,
-    isUpdating,
+    // isDisabled,
+    // isUpdating,
   } = film;
 
   const setRatingClass = () => {
