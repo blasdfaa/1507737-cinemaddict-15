@@ -8,41 +8,6 @@ export default class Films extends AbstractObserver {
     this._films = [];
   }
 
-  getFilms() {
-    return this._films;
-  }
-
-  setFilms(updateType, films) {
-    this._films = [...films];
-
-    this._notify(updateType);
-  }
-
-  getRatedFilms() {
-    return [...this._films]
-      .filter((film) => film.filmRating > TOP_RATED_COUNT)
-      .sort((a, b) => (b.filmRating > a.filmRating ? 1 : -1))
-      .slice(0, EXTRA_FILM_CARDS_COUNT);
-  }
-
-  getCommentedFilms() {
-    return [...this._films]
-      .sort((a, b) => b.comments.length - a.comments.length)
-      .slice(0, EXTRA_FILM_CARDS_COUNT);
-  }
-
-  updateFilm(updateType, update) {
-    const index = this._films.findIndex((film) => film.id === update.id);
-
-    if (index === -1) {
-      return;
-    }
-
-    this._films = [...this._films.slice(0, index), update, ...this._films.slice(index + 1)];
-
-    this._notify(updateType, update);
-  }
-
   static adaptToClient(film) {
     const adaptedFilm = {
       ...film,
@@ -124,5 +89,40 @@ export default class Films extends AbstractObserver {
     delete adaptedFilm.watchingDate;
 
     return adaptedFilm;
+  }
+
+  getFilms() {
+    return this._films;
+  }
+
+  setFilms(updateType, films) {
+    this._films = [...films];
+
+    this._notify(updateType);
+  }
+
+  getRatedFilms() {
+    return [...this._films]
+      .filter((film) => film.filmRating > TOP_RATED_COUNT)
+      .sort((a, b) => (b.filmRating > a.filmRating ? 1 : -1))
+      .slice(0, EXTRA_FILM_CARDS_COUNT);
+  }
+
+  getCommentedFilms() {
+    return [...this._films]
+      .sort((a, b) => b.comments.length - a.comments.length)
+      .slice(0, EXTRA_FILM_CARDS_COUNT);
+  }
+
+  updateFilm(updateType, update) {
+    const index = this._films.findIndex((film) => film.id === update.id);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._films = [...this._films.slice(0, index), update, ...this._films.slice(index + 1)];
+
+    this._notify(updateType, update);
   }
 }

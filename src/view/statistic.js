@@ -183,13 +183,25 @@ export default class StatsScreen extends AbstractView {
     return createStatisticTemplate(this._rating, this._currentFilter, this._films);
   }
 
+  _getScrollPositon() {
+    return this.renderElement().scrollTop;
+  }
+
+  _setScrollPosition(value) {
+    this.renderElement().scrollTop = value;
+  }
+
   _filterTypeChangeHandler(evt) {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
 
     evt.preventDefault();
+
+    const scroll = this._getScrollPositon();
+
     this._callback.filterTypeChange(evt.target.value);
+    this._setScrollPosition(scroll);
   }
 
   setFilterTypeChangeHandler(callback) {
@@ -197,10 +209,6 @@ export default class StatsScreen extends AbstractView {
     this.renderElement()
       .querySelector('.statistic__filters')
       .addEventListener('click', this._filterTypeChangeHandler);
-  }
-
-  restoreHandlers() {
-    this._setChart();
   }
 
   _setChart() {

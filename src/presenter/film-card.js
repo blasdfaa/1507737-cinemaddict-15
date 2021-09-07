@@ -4,11 +4,6 @@ import FilmCardView from '../view/film-card';
 import FilmPopupView from '../view/film-popup';
 import CommentsModel from '../model/comments';
 
-export const State = {
-  UPDATING: 'UPDATING',
-  ABORTING: 'ABORTING',
-};
-
 export default class FilmCard {
   constructor(filmContainer, changeData, changeMode, filterType, api) {
     this._filmContainer = filmContainer;
@@ -131,6 +126,7 @@ export default class FilmCard {
     }
 
     const currentFilterType = this._filterType === 'All movies' || this._filterType !== 'History';
+    const isAlreadyViewed = this._film.isViewed;
 
     if (!currentFilterType && this._filmPopupComponent) {
       this._hidePopup();
@@ -142,7 +138,7 @@ export default class FilmCard {
       {
         ...this._film,
         isViewed: !this._film.isViewed,
-        wathingDate: this._film.isViewed ? new Date() : null,
+        wathingDate: isAlreadyViewed ? new Date() : null,
       },
       () => {
         if (this._filmPopupComponent) {

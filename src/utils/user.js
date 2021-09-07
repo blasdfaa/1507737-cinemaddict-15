@@ -6,17 +6,17 @@ export const getUserRating = (watchedCount) => {
   const isFanRank = watchedCount > MIN_FILMS_COUNT && watchedCount <= MAX_FILMS_COUNT;
   const isMovieBuffRank = watchedCount > MAX_FILMS_COUNT;
 
-  switch (watchedCount) {
-    case isNoviceRank:
-      return ProfileRank.NOVICE;
-    case isFanRank:
-      return ProfileRank.FAN;
-    case isMovieBuffRank:
-      return ProfileRank.MOVIE_BUFF;
-    default:
-      return '';
+  if (isNoviceRank) {
+    return ProfileRank.NOVICE;
+  } else if (isFanRank) {
+    return ProfileRank.FAN;
+  } else if (isMovieBuffRank) {
+    return ProfileRank.MOVIE_BUFF;
+  } else {
+    return '';
   }
 };
+
 
 export const filterStatsByWatchingDate = (films, period) => {
   const deadline = dayjs().subtract(TIME_COUNT, period);
