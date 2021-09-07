@@ -229,7 +229,7 @@ export default class Films {
     const films = this._getFilms();
     const filmsCount = films.length;
 
-    if (filmsCount === 0) {
+    if (!filmsCount) {
       this._renderEmptyFilmsMessage();
       return;
     }
@@ -338,7 +338,7 @@ export default class Films {
     removeComponent(this._filmListCommentedComponent);
 
     this._emptyListComponent = new EmptyListView(this._filterType);
-    render(this._filmsList, this._emptyListComponent, RenderPosition.BEFOREEND);
+    render(this._filmsSection, this._emptyListComponent, RenderPosition.BEFOREEND);
   }
 
   // Метод для рендера кнопки "Загрузить еще"

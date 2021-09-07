@@ -34,7 +34,7 @@ export default class FilmCard {
     this.body = document.querySelector('body');
   }
 
-  init(film, comments) {
+  init(film) {
     this._film = film;
 
     this._api.getCommentsList(this._film).then((response) => {
@@ -48,8 +48,10 @@ export default class FilmCard {
     const prevFilmCardComponent = this._filmCardComponent;
 
     this._filmCardComponent = new FilmCardView(film);
-
-    this._filmCardComponent.setFilmCardClickHandler(() => this._renderFilmPopup(film, comments));
+    this._filmCardComponent.setFilmCardClickHandler(() => this._renderFilmPopup(
+      film,
+      this._commentsModel.getComments(),
+    ));
     this._filmCardComponent.setViewedClickHadler(this._switchViewedClickHadler);
     this._filmCardComponent.setFavoriteClickHadler(this._switchFavoriteClickHadler);
     this._filmCardComponent.setWatchlistClickHadler(this._switchWatchlistClickHadler);
@@ -74,40 +76,6 @@ export default class FilmCard {
 
   destroy() {
     removeComponent(this._filmCardComponent);
-  }
-
-  setViewState(state) {
-    if (this._mode === CardMode.CLOSE) {
-      return;
-    }
-
-    const resetPopupState = () => {
-      this._filmCardComponent.updateData({
-        isDisabled: false,
-        isUpdating: false,
-      });
-      this._filmPopupComponent.updateData({
-        isDisabled: false,
-        isUpdating: false,
-      });
-    };
-
-    switch (state) {
-      case State.UPDATING:
-        this._filmCardComponent.updateData({
-          isDisabled: true,
-          isUpdating: true,
-        });
-        this._filmPopupComponent.updateData({
-          isDisabled: true,
-          isUpdating: true,
-        });
-        break;
-      case State.ABORTING:
-        this._filmCardComponent.shake(resetPopupState);
-        this._filmPopupComponent.shake(resetPopupState);
-        break;
-    }
   }
 
   _renderFilmPopup(film) {
@@ -197,7 +165,7 @@ export default class FilmCard {
       this._scrollPosition = this._filmPopupComponent.getScrollPosition();
     }
 
-    const currentFilterType = this._filterType === 'all movies' || this._filterType !== 'favorites';
+    const currentFilterType = this._filterType === 'All movies' || this._filterType !== 'Favorites';
 
     if (!currentFilterType && this._filmPopupComponent) {
       this._hidePopup();
@@ -231,7 +199,7 @@ export default class FilmCard {
       this._scrollPosition = this._filmPopupComponent.getScrollPosition();
     }
 
-    const currentFilterType = this._filterType === 'all movies' || this._filterType !== 'watchlist';
+    const currentFilterType = this._filterType === 'All movies' || this._filterType !== 'Watchlist';
 
     if (!currentFilterType && this._filmPopupComponent) {
       this._hidePopup();
