@@ -7,6 +7,7 @@ export const MIN_FILMS_COUNT = 20;
 export const MAX_FILMS_COUNT = 20;
 export const TIME_COUNT = 1;
 export const BAR_HEIGHT_SIZE = 50;
+export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
@@ -75,6 +76,7 @@ export const ProfileRank = {
 export const FilmDurationFormat = {
   MINUTE: 'minute',
   HOUR: 'hour',
+  DAY: 'day',
 };
 
 export const emojiList = ['angry', 'sleeping', 'puke', 'smile'];

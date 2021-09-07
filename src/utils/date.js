@@ -24,6 +24,8 @@ export const getTotalFilmsDuration = (films, format) => {
       return dayjs.duration(totalDuration, 'm').format('H');
     case FilmDurationFormat.MINUTE:
       return dayjs.duration(totalDuration, 'm').format('m');
+    case FilmDurationFormat.DAY:
+      return dayjs.duration(totalDuration, 'm').format('D');
   }
 };
 
@@ -36,16 +38,16 @@ export const getGenres = (films) => {
 };
 
 export const countGenres = (films) => {
-  const allMoviesGenres = [];
+  const allFilmsGenres = [];
 
-  films.forEach((film) => allMoviesGenres.push(...film.genres));
+  films.forEach((film) => allFilmsGenres.push(...film.genres));
 
   const genres = [];
 
   getGenres(films).forEach((genre) =>
     genres.push({
       genre: genre,
-      count: allMoviesGenres.filter((allMoviesgenre) => allMoviesgenre === genre).length,
+      count: allFilmsGenres.filter((allFilmgenre) => allFilmgenre === genre).length,
     }),
   );
 

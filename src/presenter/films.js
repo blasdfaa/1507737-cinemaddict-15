@@ -94,19 +94,15 @@ export default class Films {
     return filtredFilms;
   }
 
-  _viewActionHandler(actionType, updateType, update) {
+  _viewActionHandler(actionType, updateType, update, callback, errCallback) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._api.updateFilm(update).then((response) => {
-          this._filmsModel.updateFilm(updateType, response);
-        });
-        break;
-      case UserAction.ADD_COMMENT:
-        this._commentsModel.addComment(updateType, update);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this._commentsModel.deleteComment(updateType, update);
-        break;
+        this._api.updateFilm(update)
+          .then((response) => {
+            this._filmsModel.updateFilm(updateType, response);
+          })
+          .then(callback)
+          .catch(errCallback);
     }
   }
 
@@ -132,8 +128,6 @@ export default class Films {
         this._initFilmCardPresenter(this._filmCardPresenter, data);
         this._initFilmCardPresenter(this._ratedFilmCardPresenter, data);
         this._initFilmCardPresenter(this._commentedFilmCardPresenter, data);
-        this._renderRatedFilms();
-        this._renderCommentedFilms();
         break;
       case UpdateType.MINOR:
         this._clearFilmList({ resetFilmCounter: true });
@@ -141,7 +135,6 @@ export default class Films {
         break;
       case UpdateType.MAJOR:
         this._clearFilmList({ resetFilmCounter: true, resetSortType: true });
-        this._renderFilmsSection();
 
         switch (this._currentScreen) {
           case Pages.FILMS:

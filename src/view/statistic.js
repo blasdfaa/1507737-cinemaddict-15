@@ -61,8 +61,8 @@ const renderGenresChart = (statisticCtx, films) => new Chart(statisticCtx, {
   },
 });
 
-const createStatisticTemplate = (rating, currentFilter, films) => (`
-  <section class="statistic">
+const createStatisticTemplate = (rating, currentFilter, films) => (
+  `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
@@ -126,12 +126,16 @@ const createStatisticTemplate = (rating, currentFilter, films) => (`
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
         <p class="statistic__item-text">
-        ${getTotalFilmsDuration(films, FilmDurationFormat.HOUR) > 1 ?
+      ${getTotalFilmsDuration(films, FilmDurationFormat.DAY) > 0 ?
     `${getTotalFilmsDuration(
       films,
-      FilmDurationFormat.HOUR,
-    )}<span class="statistic__item-description">h</span>`
-    : ''}
+      FilmDurationFormat.DAY,
+    )} <span class="statistic__item-description">d</span>` : ''}
+      ${getTotalFilmsDuration(films, FilmDurationFormat.HOUR) > 0 ? `${getTotalFilmsDuration(
+    films,
+    FilmDurationFormat.HOUR,
+  )}
+       <span class="statistic__item-description">h</span>` : ''}
 
         ${getTotalFilmsDuration(films, FilmDurationFormat.MINUTE)}
         <span class="statistic__item-description">m</span></p>

@@ -7,6 +7,22 @@ export default class Api {
     this._authorization = authorization;
   }
 
+  static checkStatus(response) {
+    if (!response.ok) {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
+
+    return response;
+  }
+
+  static toJSON(response) {
+    return response.json();
+  }
+
+  static catchError(err) {
+    throw err;
+  }
+
   getFilmsData() {
     return this._load({ url: 'movies' })
       .then(Api.toJSON)
@@ -28,20 +44,19 @@ export default class Api {
     return this._load({ url: `comments/${film.id}` }).then(Api.toJSON);
   }
 
-  addComment(film) {
+  addComment(film, comment) {
     return this._load({
-      url: 'movies',
+      url: `comments/${film.id}`,
       method: Method.POST,
-      body: JSON.stringify(FilmsModel.adaptToServer(film)),
+      body: JSON.stringify(comment),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     })
-      .then(Api.toJSON)
-      .then(FilmsModel.adaptToClient);
+      .then(Api.toJSON);
   }
 
-  deleteComment(comment) {
+  deleteComment(id) {
     return this._load({
-      url: `comments/${comment.id}`,
+      url: `comments/${id}`,
       method: Method.DELETE,
     });
   }
@@ -52,21 +67,5 @@ export default class Api {
     return fetch(`${this._endPoint}/${url}`, { method, body, headers })
       .then(Api.checkStatus)
       .catch(Api.catchError);
-  }
-
-  static checkStatus(response) {
-    if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    return response;
-  }
-
-  static toJSON(response) {
-    return response.json();
-  }
-
-  static catchError(err) {
-    throw err;
   }
 }
