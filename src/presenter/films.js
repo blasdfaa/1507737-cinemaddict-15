@@ -1,7 +1,8 @@
 import { FILM_CARDS_COUNT_STEP, FilterType, Pages, RenderPosition, SortType, StatsFilterType, UpdateType, UserAction } from '../utils/const';
+import { filter } from '../utils/filter';
 import { removeComponent, render } from '../utils/render';
 import { sortByDate, sortByRating } from '../utils/sort';
-import { filter } from '../utils/filter';
+import { filterStatsByWatchingDate, getUserRating } from '../utils/user';
 import EmptyListView from '../view/empty-list';
 import FooterStats from '../view/footer-stats';
 import FilmListRatedView from '../view/film-list-rated';
@@ -9,16 +10,14 @@ import FilmListCommentedView from '../view/film-list-commented';
 import FilmCardPresenter from '../presenter/film-card';
 import SortFilmListView from '../view/sort-films';
 import ShowMoreButtonView from '../view/show-more';
-import PreloaderView from '../view/preloader';
 import FilmSectionView from '../view/film-section';
 import FilmListContainerView from '../view/film-list-container';
 import FilmListView from '../view/film-list';
-import { filterStatsByWatchingDate, getUserRating } from '../utils/user';
 import StatsScreenView from '../view/statistic';
+import PreloaderView from '../view/preloader';
 
 export default class Films {
-  constructor(headerContainer, mainContainer, footerContainer, filmsModel, filterModel, api) {
-    this._headerContainer = headerContainer;
+  constructor(mainContainer, footerContainer, filmsModel, filterModel, api) {
     this._mainContainer = mainContainer;
     this._footerContainer = footerContainer;
 

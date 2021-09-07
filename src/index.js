@@ -15,11 +15,12 @@ const mainElement = document.querySelector('.main');
 const footerElement = document.querySelector('.footer');
 
 new Filter(headerElement, mainElement, filterModel, filmsModel).init();
-new Films(headerElement, mainElement, footerElement, filmsModel, filterModel, api).init();
+new Films(mainElement, footerElement, filmsModel, filterModel, api).init();
 
-api.getFilmsData().then((films) => {
-  filmsModel.setFilms(UpdateType.INIT, films);
-});
-// .catch(() => {
-//   filmsModel.setFilms(UpdateType.INIT, []);
-// });
+api.getFilmsData()
+  .then((films) => {
+    filmsModel.setFilms(UpdateType.INIT, films);
+  })
+  .catch(() => {
+    filmsModel.setFilms(UpdateType.INIT, []);
+  });
