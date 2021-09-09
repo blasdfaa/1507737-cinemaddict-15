@@ -9,6 +9,7 @@ const createFooterStatsTemplate = (films = []) => (
 export default class FooterStats extends AbstractView {
   constructor(films) {
     super();
+
     this._films = films;
   }
 
