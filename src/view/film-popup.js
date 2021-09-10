@@ -2,7 +2,7 @@ import { getListFromArr } from '../utils/common';
 import { getDurationTime, getFormatDate, getRelativeTimeFromDate } from '../utils/date';
 import he from 'he';
 import SmartView from './smart';
-import { emojiList, SHAKE_ANIMATION_TIMEOUT } from '../utils/const';
+import { emojiList } from '../utils/const';
 
 const createCommentItemTemplate = (commentsData = {}) => {
   const { id, author, date, emotion, comment } = commentsData;
@@ -262,13 +262,6 @@ export default class FilmPopup extends SmartView {
     return this._data.scrollPosition;
   }
 
-  shake() {
-    this.renderElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-    setTimeout(() => {
-      this.renderElement().style.animation = '';
-    }, SHAKE_ANIMATION_TIMEOUT);
-  }
-
   _closePopupClickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
@@ -316,7 +309,7 @@ export default class FilmPopup extends SmartView {
   }
 
   _commentSubmitHandler(evt) {
-    if (evt.ctrlKey && evt.key === 'Enter') {
+    if (evt.key === 'Enter' && evt.metaKey || evt.ctrlKey && evt.key === 'Enter') {
       evt.preventDefault();
 
       const input = this.renderElement().querySelector('.film-details__comment-input');
@@ -330,7 +323,7 @@ export default class FilmPopup extends SmartView {
   _commentDeleteClickHandler(evt) {
     evt.preventDefault();
     const buttons = this.renderElement().querySelectorAll('.film-details__comment-delete');
-    this._callback.deleteComment(evt.target.dataset.commentId, this._data, evt.target, buttons);
+    this._callback.deleteComment(evt.target.dataset.commentId, evt.target, buttons);
   }
 
   setClosePopupClickHandler(callback) {

@@ -36,6 +36,7 @@ export const CardMode = {
 
 export const UserAction = {
   UPDATE_FILM: 'UPDATE_FILM',
+  UPDATE_POPUP: 'UPDATE_POPUP',
   ADD_COMMENT: 'ADD_COMMENT',
   DELETE_COMMENT: 'DELETE_COMMENT',
 };

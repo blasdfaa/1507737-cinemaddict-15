@@ -4,3 +4,5 @@ export const sliceDescription = (text) =>
   text.length >= MAX_DESCRIPTION_LENGTH ? `${text.slice(0, MAX_DESCRIPTION_LENGTH)}...` : text;
 
 export const getListFromArr = (arr) => arr.join(', ');
+
+export const isOnline = () => window.navigator.onLine;
