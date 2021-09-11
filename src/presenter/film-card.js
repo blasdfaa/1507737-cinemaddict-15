@@ -3,6 +3,7 @@ import { CardMode, RenderPosition, UpdateType, UserAction } from '../utils/const
 import FilmCardView from '../view/film-card';
 import FilmPopupView from '../view/film-popup';
 import CommentsModel from '../model/comments';
+import { isOnline } from '../utils/common';
 
 export default class FilmCard {
   constructor(filmContainer, changeData, changeMode, filterType, api) {
@@ -140,19 +141,6 @@ export default class FilmCard {
         isViewed: !this._film.isViewed,
         wathingDate: isAlreadyViewed ? new Date() : null,
       },
-      () => {
-        if (this._filmPopupComponent) {
-          this._renderFilmPopup(this._film, this._commentsModel.getComments());
-          this._filmPopupComponent.renderElement().scrollTo(0, this._scrollPosition);
-        }
-      },
-      () => {
-        if (this._filmPopupComponent) {
-          this._filmPopupComponent.shake();
-        } else {
-          this._filmCardComponent.shake();
-        }
-      },
     );
   }
 
@@ -173,19 +161,6 @@ export default class FilmCard {
       {
         ...this._film,
         isFavorite: !this._film.isFavorite,
-      },
-      () => {
-        if (this._filmPopupComponent) {
-          this._renderFilmPopup(this._film, this._commentsModel.getComments());
-          this._filmPopupComponent.renderElement().scrollTo(0, this._scrollPosition);
-        }
-      },
-      () => {
-        if (this._filmPopupComponent) {
-          this._filmPopupComponent.shake();
-        } else {
-          this._filmCardComponent.shake();
-        }
       },
     );
   }
@@ -208,23 +183,19 @@ export default class FilmCard {
         ...this._film,
         isWatchlist: !this._film.isWatchlist,
       },
-      () => {
-        if (this._filmPopupComponent) {
-          this._renderFilmPopup(this._film, this._commentsModel.getComments());
-          this._filmPopupComponent.renderElement().scrollTo(0, this._scrollPosition);
-        }
-      },
-      () => {
-        if (this._filmPopupComponent) {
-          this._filmPopupComponent.shake();
-        } else {
-          this._filmCardComponent.shake();
-        }
-      },
     );
   }
 
-  _commentDeleteClickHandler(id, data, button, buttonList) {
+  _commentDeleteClickHandler(id, button, buttonList) {
+    if (!isOnline()) {
+      this._filmPopupComponent.shake();
+      return;
+    }
+
+    if (this._filmPopupComponent) {
+      this._scrollPosition = this._filmPopupComponent.getScrollPosition();
+    }
+
     button.textContent = 'Deleting...';
     buttonList.forEach((btn) => {
       btn.disabled = true;
@@ -232,20 +203,9 @@ export default class FilmCard {
 
     this._api.deleteComment(id).then(() => {
       this._changeData(
-        UserAction.UPDATE_FILM,
+        UserAction.UPDATE_POPUP,
         UpdateType.PATCH,
         this._film,
-        () => {
-          this._api.getCommentsList(this._film).then((response) => {
-            this._commentsModel.setComments(response);
-            this._renderFilmPopup(this._film, this._commentsModel.getComments());
-            this._filmPopupComponent.renderElement().scrollTo(0, data.scrollPosition);
-
-            buttonList.forEach((btn) => {
-              btn.disabled = false;
-            });
-          });
-        },
       );
     }).catch(() => {
       this._filmPopupComponent.shake();
@@ -257,7 +217,16 @@ export default class FilmCard {
   }
 
   _commentSubmitHandler(data, input, emotionList) {
-    if (!data.emotion || !data.commentText) {
+    if (!isOnline()) {
+      this._filmPopupComponent.shake();
+      return;
+    }
+
+    if (this._filmPopupComponent) {
+      this._scrollPosition = this._filmPopupComponent.getScrollPosition();
+    }
+
+    if (!data.commentText || !data.emotion) {
       this._filmPopupComponent.shake();
       return;
     }
@@ -277,16 +246,9 @@ export default class FilmCard {
     })
       .then(() => {
         this._changeData(
-          UserAction.UPDATE_FILM,
+          UserAction.UPDATE_POPUP,
           UpdateType.PATCH,
           this._film,
-          () => {
-            this._api.getCommentsList(this._film).then((response) => {
-              this._commentsModel.setComments(response);
-              this._renderFilmPopup(this._film, this._commentsModel.getComments());
-              this._filmPopupComponent.renderElement().scrollTo(0, data.scrollPosition);
-            });
-          },
         );
       })
       .catch(() => {
@@ -296,6 +258,28 @@ export default class FilmCard {
         });
         this._filmPopupComponent.shake();
       });
+  }
 
+  updateComments() {
+    this._api.getCommentsList(this._film).then((response) => {
+      this._commentsModel.setComments(response);
+      this._renderFilmPopup(this._film, this._commentsModel.getComments());
+      this._filmPopupComponent.renderElement().scrollTo(0, this._scrollPosition);
+    });
+  }
+
+  rerenderPopup() {
+    if (this._filmPopupComponent) {
+      this._renderFilmPopup(this._film, this._commentsModel.getComments());
+      this._filmPopupComponent.renderElement().scrollTo(0, this._scrollPosition);
+    }
+  }
+
+  setShakeState() {
+    if (this._filmPopupComponent) {
+      this._filmPopupComponent.shake();
+    } else {
+      this._filmCardComponent.shake();
+    }
   }
 }

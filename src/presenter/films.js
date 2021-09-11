@@ -93,15 +93,35 @@ export default class Films {
     return filtredFilms;
   }
 
-  _viewActionHandler(actionType, updateType, update, callback, errCallback) {
+  _viewActionHandler(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._api.updateFilm(update)
           .then((response) => {
             this._filmsModel.updateFilm(updateType, response);
           })
-          .then(callback)
-          .catch(errCallback);
+          .then(() => {
+            this._rerenderPresenterPopup(this._filmCardPresenter, update);
+            this._rerenderPresenterPopup(this._ratedFilmCardPresenter, update);
+            this._rerenderPresenterPopup(this._commentedFilmCardPresenter, update);
+          })
+          .catch(() => {
+            this._setShakeStatePresenter(this._filmCardPresenter, update);
+            this._setShakeStatePresenter(this._ratedFilmCardPresenter, update);
+            this._setShakeStatePresenter(this._commentedFilmCardPresenter, update);
+          });
+        break;
+      case UserAction.UPDATE_POPUP:
+        this._api.updateFilm(update)
+          .then((response) => {
+            this._filmsModel.updateFilm(updateType, response);
+          })
+          .then(() => {
+            this._updatePresenterComments(this._filmCardPresenter, update);
+            this._updatePresenterComments(this._ratedFilmCardPresenter, update);
+            this._updatePresenterComments(this._commentedFilmCardPresenter, update);
+          });
+        break;
     }
   }
 
@@ -109,6 +129,24 @@ export default class Films {
   _initFilmCardPresenter(presenters, data) {
     if (presenters.has(data.id)) {
       presenters.get(data.id).init(data, data.comments);
+    }
+  }
+
+  _updatePresenterComments(presenter, data) {
+    if (presenter.has(data.id)) {
+      return presenter.get(data.id).updateComments();
+    }
+  }
+
+  _rerenderPresenterPopup(presenter, data) {
+    if (presenter.has(data.id)) {
+      return presenter.get(data.id).rerenderPopup();
+    }
+  }
+
+  _setShakeStatePresenter(presenter, data) {
+    if (presenter.has(data.id)) {
+      return presenter.get(data.id).setShakeState();
     }
   }
 
