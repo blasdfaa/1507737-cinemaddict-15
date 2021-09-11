@@ -217,18 +217,8 @@ export default class FilmCard {
   }
 
   _commentSubmitHandler(data, input, emotionList) {
-    if (!isOnline()) {
-      this._filmPopupComponent.shake();
-      return;
-    }
-
     if (this._filmPopupComponent) {
       this._scrollPosition = this._filmPopupComponent.getScrollPosition();
-    }
-
-    if (!data.commentText || !data.emotion) {
-      this._filmPopupComponent.shake();
-      return;
     }
 
     const newComment = {

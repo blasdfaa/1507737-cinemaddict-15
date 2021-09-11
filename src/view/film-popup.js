@@ -1,4 +1,4 @@
-import { getListFromArr } from '../utils/common';
+import { getListFromArr, isOnline } from '../utils/common';
 import { getDurationTime, getFormatDate, getRelativeTimeFromDate } from '../utils/date';
 import he from 'he';
 import SmartView from './smart';
@@ -85,16 +85,9 @@ const filmPopupTemplate = (data, commentsItems) => {
     ? 'film-details__control-button--favorite film-details__control-button--active'
     : 'film-details__control-button--favorite';
 
-  const commentItemsTemplate = commentsItems
-    .map((comment) => createCommentItemTemplate(comment))
-    .join('');
-
-  const createCommentsTitle = (commentsLength) =>
-    commentsLength
-      ? `<h3 class="film-details__comments-title">
-          Comments <span class="film-details__comments-count">${commentsLength}</span>
-        </h3>`
-      : '';
+  const commentItemsTemplate = commentsItems ?
+    commentsItems.map((comment) => createCommentItemTemplate(comment)).join('')
+    : '';
 
   const createCommentsList = (commentsItem, itemTemplate) =>
     commentsItem.length
@@ -196,7 +189,9 @@ const filmPopupTemplate = (data, commentsItems) => {
         </section>
         <div class="film-details__bottom-container">
           <section class="film-details__comments-wrap">
-            ${createCommentsTitle(comments.length)}
+            <h3 class="film-details__comments-title">
+              Comments <span class="film-details__comments-count">${comments.length}</span>
+            </h3>
             ${createCommentsList(commentItemsTemplate, commentItemsTemplate)}
             <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">
@@ -312,6 +307,16 @@ export default class FilmPopup extends SmartView {
     if (evt.key === 'Enter' && evt.metaKey || evt.ctrlKey && evt.key === 'Enter') {
       evt.preventDefault();
 
+      if (!isOnline()) {
+        this.shake();
+        return;
+      }
+
+      if (!this._data.commentText || !this._data.emotion) {
+        this.shake();
+        return;
+      }
+
       const input = this.renderElement().querySelector('.film-details__comment-input');
       const emotionList = this.renderElement().querySelectorAll('.film-details__emoji-item');
 
@@ -322,6 +327,12 @@ export default class FilmPopup extends SmartView {
 
   _commentDeleteClickHandler(evt) {
     evt.preventDefault();
+
+    if (!isOnline()) {
+      this.shake();
+      return;
+    }
+
     const buttons = this.renderElement().querySelectorAll('.film-details__comment-delete');
     this._callback.deleteComment(evt.target.dataset.commentId, evt.target, buttons);
   }
