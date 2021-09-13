@@ -1,5 +1,5 @@
-import FilmsModel from './model/films';
-import { Method } from './utils/const';
+import FilmsModel from '../model/films';
+import { Method } from '../utils/const';
 
 export default class Api {
   constructor(endPoint, authorization) {
@@ -22,6 +22,17 @@ export default class Api {
   static catchError(err) {
     throw err;
   }
+
+  sync(data) {
+    return this._load({
+      url: '/movies/sync',
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    })
+      .then(Api.toJSON);
+  }
+
 
   getFilmsData() {
     return this._load({ url: 'movies' })
