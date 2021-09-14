@@ -9,7 +9,7 @@ import { render } from './utils/render';
 import Store from './api/store';
 import Provider from './api/provider';
 
-const STORE_PREFIX = 'cinemaddict-localstorage ';
+const STORE_PREFIX = 'cinemaddict-localstorage';
 const STORE_VER = 'v15';
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
