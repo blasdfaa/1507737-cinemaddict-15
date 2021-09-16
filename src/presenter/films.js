@@ -9,7 +9,7 @@ import FilmListRatedView from '../view/film-list-rated';
 import FilmListCommentedView from '../view/film-list-commented';
 import FilmCardPresenter from '../presenter/film-card';
 import SortFilmListView from '../view/sort-films';
-import ShowMoreButtonView from '../view/show-more';
+import ShowMoreButtonView from '../view/show-more-button';
 import FilmSectionView from '../view/film-section';
 import FilmListContainerView from '../view/film-list-container';
 import FilmListView from '../view/film-list';
