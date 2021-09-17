@@ -8,12 +8,12 @@ import FooterStats from '../view/footer-stats';
 import FilmListRatedView from '../view/film-list-rated';
 import FilmListCommentedView from '../view/film-list-commented';
 import FilmCardPresenter from '../presenter/film-card';
-import SortFilmListView from '../view/sort-films';
+import SortFilmListView from '../view/sort-film-list';
 import ShowMoreButtonView from '../view/show-more-button';
 import FilmSectionView from '../view/film-section';
 import FilmListContainerView from '../view/film-list-container';
 import FilmListView from '../view/film-list';
-import StatsScreenView from '../view/statistic';
+import StatsScreenView from '../view/stats-screen';
 import PreloaderView from '../view/preloader';
 
 export default class Films {

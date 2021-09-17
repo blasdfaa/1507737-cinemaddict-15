@@ -12,9 +12,9 @@ export const getUserRating = (watchedCount) => {
     return ProfileRank.FAN;
   } else if (isMovieBuffRank) {
     return ProfileRank.MOVIE_BUFF;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 

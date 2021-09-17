@@ -65,6 +65,7 @@ html {
 }
 
 body {
+  position: relative;
   box-sizing: border-box;
   max-width: 1240px;
   padding: var(--vertical-gap) var(--horizontal-gap) 0;
@@ -1105,6 +1106,30 @@ button {
   min-height: 300px;
   padding-top: 50px;
   padding-bottom: 50px;
+}
+
+.notification {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  position: fixed;
+  padding: 15px;
+  top: 10px;
+  left: 10px;
+  font-family: var(--font);
+  color: var(--text-color-poor);
+  font-size: var(--font-size-smaller);
+  z-index: 10;
+  border: solid 1px var(--outline-color);
+}
+
+.notification__text {
+  margin: 0 10px 0 0;
+}
+
+.notification__spinner {
+  display: block;
+  shape-rendering: auto;
 }
 
 @keyframes shake {
