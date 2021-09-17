@@ -54,7 +54,7 @@ export const countsGenres = (films) => {
   return genres;
 };
 
-export const getGenresCount = (films) => {
+export const getGenresCounts = (films) => {
   const count = [];
 
   countsGenres(films).forEach((genre) => count.push(genre.count));
