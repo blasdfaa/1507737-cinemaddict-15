@@ -55,11 +55,11 @@ export const countsGenres = (films) => {
 };
 
 export const getGenresCounts = (films) => {
-  const count = [];
+  const counts = [];
 
-  countsGenres(films).forEach((genre) => count.push(genre.count));
+  countsGenres(films).forEach((genre) => counts.push(genre.count));
 
-  return count;
+  return counts;
 };
 
 export const getTopGenre = (films) => {
