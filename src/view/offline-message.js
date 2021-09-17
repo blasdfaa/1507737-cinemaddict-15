@@ -31,4 +31,12 @@ export default class NotificationMessage extends AbstractView {
   getTemplate() {
     return createMessageTemplate(this._textMessage);
   }
+
+  removeElement() {
+    super.removeElement();
+
+    if (document.querySelector('.notification')) {
+      document.querySelector('.notification').remove();
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { BAR_HEIGHT_SIZE, FilmDurationFormat, StatsFilterType } from '../utils/const';
-import { getGenres, getGenresCount, getTopGenre, getTotalFilmsDuration } from '../utils/date';
+import { getGenres, getGenresCounts, getTopGenre, getTotalFilmsDuration } from '../utils/date';
 import AbstractView from './abstract';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -10,7 +10,7 @@ const renderGenresChart = (statisticCtx, films) => new Chart(statisticCtx, {
   data: {
     labels: Array.from(getGenres(films)),
     datasets: [{
-      data: getGenresCount(films),
+      data: getGenresCounts(films),
       backgroundColor: '#ffe800',
       hoverBackgroundColor: '#ffe800',
       anchor: 'start',
