@@ -2,7 +2,7 @@ import { getListFromArr, isOnline } from '../utils/common';
 import { getDurationTime, getFormatDate, getRelativeTimeFromDate } from '../utils/date';
 import he from 'he';
 import SmartView from './smart';
-import { emojiList } from '../utils/const';
+import { EMOJES_LIST } from '../utils/const';
 
 const createCommentItemTemplate = (commentsData = {}) => {
   const { id, author, date, emotion, comment } = commentsData;
@@ -40,8 +40,8 @@ const createEmojiItemTemplate = (selectEmoji, emotion) =>
     </label>
   `;
 
-const generateEmojiList = (selectedEmoji, emotionArr) =>
-  emotionArr.map((emoji) => createEmojiItemTemplate(selectedEmoji, emoji)).join('');
+const generateEmojiList = (selectedEmoji, emotionsList) =>
+  emotionsList.map((emoji) => createEmojiItemTemplate(selectedEmoji, emoji)).join('');
 
 const filmPopupTemplate = (data, commentsItems) => {
   const {
@@ -207,7 +207,7 @@ const filmPopupTemplate = (data, commentsItems) => {
             </label>
 
             <div class="film-details__emoji-list">
-              ${generateEmojiList(emotion, emojiList)}
+              ${generateEmojiList(emotion, EMOJES_LIST)}
             </div>
           </div>
           </section>

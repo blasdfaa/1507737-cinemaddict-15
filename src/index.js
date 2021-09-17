@@ -8,10 +8,13 @@ import FooterStatsView from './view/footer-stats';
 import { render } from './utils/render';
 import Store from './api/store';
 import Provider from './api/provider';
+import NotificationMessage from './view/offline-message';
+import { isOnline } from './utils/common';
 
 const STORE_PREFIX = 'cinemaddict-localstorage';
 const STORE_VER = 'v15';
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const OFFLINE_USER_MESSAGE = 'No network access';
 
 const api = new Api(END_POINT, AUTHORIZATION);
 const store = new Store(STORE_NAME, window.localStorage);
@@ -24,8 +27,16 @@ const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');
 const footerElement = document.querySelector('.footer');
 
+const message = new NotificationMessage(OFFLINE_USER_MESSAGE);
+
 new Filter(headerElement, mainElement, filterModel, filmsModel).init();
 new Films(mainElement, footerElement, filmsModel, filterModel, apiWithProvider).init();
+
+if (!isOnline()) {
+  render(document.body, message, RenderPosition.BEFOREEND);
+} else {
+  message.removeElement();
+}
 
 apiWithProvider.getFilmsData()
   .then((films) => {
@@ -52,4 +63,5 @@ window.addEventListener('online', () => {
 
 window.addEventListener('offline', () => {
   document.title += ' [offline]';
+  render(document.body, message, RenderPosition.BEFOREEND);
 });

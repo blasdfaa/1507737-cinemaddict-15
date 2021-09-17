@@ -37,7 +37,7 @@ export const getGenres = (films) => {
   return genres;
 };
 
-export const countGenres = (films) => {
+export const countsGenres = (films) => {
   const allFilmsGenres = [];
 
   films.forEach((film) => allFilmsGenres.push(...film.genres));
@@ -57,13 +57,13 @@ export const countGenres = (films) => {
 export const getGenresCount = (films) => {
   const count = [];
 
-  countGenres(films).forEach((genre) => count.push(genre.count));
+  countsGenres(films).forEach((genre) => count.push(genre.count));
 
   return count;
 };
 
 export const getTopGenre = (films) => {
-  const topGenre = countGenres(films);
+  const topGenre = countsGenres(films);
 
   topGenre.sort((prev, next) => next.count - prev.count);
 

@@ -80,6 +80,6 @@ export const FilmDurationFormat = {
   DAY: 'day',
 };
 
-export const emojiList = ['angry', 'sleeping', 'puke', 'smile'];
+export const EMOJES_LIST = ['angry', 'sleeping', 'puke', 'smile'];
 export const AUTHORIZATION = 'Basic pqefm31541apgEenqt442ppr';
 export const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
