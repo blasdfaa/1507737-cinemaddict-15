@@ -1,4 +1,4 @@
-# Проект «Кэт энерджи» от [HTML Academy](https://htmlacademy.ru/)
+# Проект «Киноман» от [HTML Academy](https://htmlacademy.ru/)
 
 [Демо](https://v-zdorovcev.github.io/1507737-cinemaddict-15/)
 
