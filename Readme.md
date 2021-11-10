@@ -1,4 +1,4 @@
-# Проект «Киноман» от [HTML Academy](https://htmlacademy.ru/)
+# Проект «Киноман»
 
 [Демо](https://v-zdorovcev.github.io/1507737-cinemaddict-15/)
 
